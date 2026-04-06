@@ -1,22 +1,73 @@
-# LLM_citationcheck
-Repository contains python codes that were used to analyze citation outputs from LLMs
+# LLM Citation Check
 
-The Python scripts are dependent on python-docx, openpyxl, pandas and requests packages. Installation of these is required before running the scripts.
+> Python tools for analyzing citation outputs from Large Language Models.
 
-**citation_lookup.py** checks validity of citations from Word files.
-The format of citation is expected to be: "ISSN(s)|journal|author|volume|issue|page|year|type|key|DOI".
-User is prompted to select Word documents to analyze. After analysis, one Excel sheet is created with multiple columns. Citations are categorized based on LLM engine and topic extracted from word filename.
-Example filename: chatgpt_perovskite.docx
-Note that execution of this script requires internet connection as CrossRef API is called.
-Human revision of analysis is strongly advised prior to running the other Python scripts.
+---
 
-**citation_analysis.py** performs analysis on the as-created Excel sheet. 
-It can also handle multiple Excel files and will create a Combined Analysis sheet.
-Analyses performed: invalidity, publisher preference, publication years, top 5 journals (all citation, valid citations only), publisher preference within topics.
+## 📦 Requirements
 
-**paywallcheck.py** checks whether citation is open-access or requires subscription using Unpaywall API.
-User is prompted to select the analysis Excel file. Paywall check is performed by passing DOI to API, therefore analysis is only performed on valid citations.
-Note that execution of this script requires internet connection as Unpaywall API is called.
+Install these packages before running any scripts:
 
-**duplicatefind.py** looks for DOIs that appear more than once within a given run accross different LLMs or accross multiple prompts from the same LLM.
-The scripts were written specifically for our analysis and are not guaranteed to work without issues in any case. The World files we analyzed can be also found in this repository.
+```bash
+pip install python-docx openpyxl pandas requests
+```
+
+---
+
+## 🛠️ Scripts
+
+### 📄 `citation_lookup.py`
+Checks the validity of citations found in Word documents.
+
+**Expected citation format:**
+```
+ISSN(s) | journal | author | volume | issue | page | year | type | key | DOI
+```
+
+**How it works:**
+- Prompts you to select Word documents to analyze
+- Calls the **CrossRef API** to validate citations
+- Outputs one Excel sheet with multiple columns
+- Categorizes citations by LLM engine and topic (extracted from filename)
+
+**Example filename:** `chatgpt_perovskite.docx`
+
+> ⚠️ Requires an internet connection.
+>
+> ✅ Human review of results is strongly advised before running other scripts.
+
+---
+
+### 📊 `citation_analysis.py`
+Performs analysis on the Excel sheet created by `citation_lookup.py`.
+
+- Handles multiple Excel files and merges them into a Combined Analysis sheet
+
+**Analyses include:**
+- Invalidity rates
+- Publisher preference
+- Publication years
+- Top 5 journals (all citations & valid only)
+- Publisher preference by topic
+
+---
+
+### 🔓 `paywallcheck.py`
+Checks whether citations are open-access or behind a paywall, using the **Unpaywall API**.
+
+- Prompts you to select the analysis Excel file
+- Only runs on **valid citations** (uses DOI to query the API)
+
+> ⚠️ Requires an internet connection.
+
+---
+
+### 🔍 `duplicatefind.py`
+Finds DOIs that appear more than once — across different LLMs or across multiple prompts from the same LLM.
+
+---
+
+## ⚠️ Notes
+
+- These scripts were written for a specific analysis workflow and may require adjustments for other use cases.
+- The Word files used in the original analysis are also included in this repository.
